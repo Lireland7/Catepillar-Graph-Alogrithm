@@ -14,7 +14,7 @@ with open('inputfile') as f:
     for i in range(0, len(ls)):
         caterpillar.append(int(ls[i]))
 hasChecked = [False for i in caterpillar]
-
+cyclecheck = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
 
 def greedyCaterpillarAlgorithm():
     print(findLinearEmbedding())
@@ -124,10 +124,16 @@ def findBandwidth(startingNode):
             # Mark spine vertex as checked
             # Increment counts
             if caterpillar[rightCheck] > bandwidth:
-                hasChecked[rightCheck] = True
-                rightCheckCount = rightCheckCount + 1
-                spineCount = spineCount + 1
-                leafCount += caterpillar[rightCheck]
+                if cyclecheck[rightCheck] == 1:
+                    hasChecked[rightCheck] = True
+                    leftCheckCount += 1
+                    spineCount += 1
+                    leafCount += (caterpillar[rightCheck] + 2)
+                else:
+                    hasChecked[rightCheck] = True
+                    leftCheckCount += 1
+                    spineCount += 1
+                    leafCount += caterpillar[rightCheck]
 
             # Else done
             # Return bandwidth
@@ -141,10 +147,17 @@ def findBandwidth(startingNode):
             # Mark spine vertex as checked
             # Increment counts
             if caterpillar[leftCheck] > bandwidth:
-                hasChecked[leftCheck] = True
-                leftCheckCount += 1
-                spineCount += 1
-                leafCount += caterpillar[leftCheck]
+                if cyclecheck[leftCheck] == 1:
+                    hasChecked[leftCheck] = True
+                    leftCheckCount += 1
+                    spineCount += 1
+                    leafCount += (caterpillar[leftCheck]+2)
+                else:
+                    hasChecked[leftCheck] = True
+                    leftCheckCount += 1
+                    spineCount += 1
+                    leafCount += caterpillar[leftCheck]
+
 
             # Else done
             # Return Bandwidth
@@ -157,19 +170,31 @@ def findBandwidth(startingNode):
             # And it has more leaves than the bandwidth
             # Increment counts
             if caterpillar[rightCheck] > caterpillar[leftCheck] and caterpillar[rightCheck] > bandwidth:
-                hasChecked[rightCheck] = True
-                rightCheckCount += 1
-                spineCount += 1
-                leafCount += caterpillar[rightCheck]
+                if cyclecheck[rightCheck] == 1:
+                    hasChecked[rightCheck] = True
+                    leftCheckCount += 1
+                    spineCount += 1
+                    leafCount += (caterpillar[rightCheck] + 2)
+                else:
+                    hasChecked[rightCheck] = True
+                    leftCheckCount += 1
+                    spineCount += 1
+                    leafCount += caterpillar[rightCheck]
 
             # If the left has more leaves than the right
             # And it has more leaves than the bandwidth
             # Increment counts
             elif caterpillar[rightCheck] < caterpillar[leftCheck] and caterpillar[leftCheck] > bandwidth:
-                hasChecked[leftCheck] = True
-                leftCheckCount += 1
-                spineCount += 1
-                leafCount += caterpillar[leftCheck]
+                if cyclecheck[leftCheck] == 1:
+                    hasChecked[leftCheck] = True
+                    leftCheckCount += 1
+                    spineCount += 1
+                    leafCount += (caterpillar[leftCheck] + 2)
+                else:
+                    hasChecked[leftCheck] = True
+                    leftCheckCount += 1
+                    spineCount += 1
+                    leafCount += caterpillar[leftCheck]
 
             # Else done
             # Return bandwidth

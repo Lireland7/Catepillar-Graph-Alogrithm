@@ -18,6 +18,7 @@ class Graph:
     def __init__(self, vertices):
         self.vertices = vertices
         self.graph = {i: [] for i in range(self.vertices)}
+        self.cylce = False
 
     # Method to add edges to edge set
     def addEdge(self, u, v):
@@ -96,7 +97,23 @@ class Graph:
         visited = [0 for i in range(self.vertices)]
         path = self.dfs(visited, longestNode, node, stack)
         print('Longest path is from', longestNode, 'to', node, 'of length', LongDistance)
+
         return path
+
+    def cycleFinder(self):
+        path = []
+        path.append(self.longestPath())
+        for i in range(len(path) - 1):
+            visited = []
+            self.dfsCycle(visited, path[i])
+
+    def dfsCycle(self, visited, node):
+        if node not in visited:
+            visited.add(node)
+            for next in self.graph[node]:
+                self.dfsCycle(visited, next)
+        elif node in visited:
+            self.cylce = True
 
 
 # Driver
@@ -110,4 +127,5 @@ G.addEdge(4, 5)
 G.addEdge(1, 6)
 G.addEdge(6, 7)
 G.addEdge(6, 8)
-path = G.longestPath()
+G.cycleFinder()
+print(G.cylce)
